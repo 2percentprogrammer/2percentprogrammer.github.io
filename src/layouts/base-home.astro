@@ -2,11 +2,16 @@
 const {title} = Astro.props;
 import MainSidebar from '../components/MainSidebar.astro';
 import { Image } from 'astro:assets';
-import food from '../imgs/food.jpg'
+import food from '../imgs/food.jpg';
+import { SEO } from "astro-seo";
 ---
 
 <html>
   <head>
+    <SEO
+    title="Shaw Lee Wisconsin Rapids"
+    description="Shaw Lee - providing great Chinese and Japanese cuisine to Wisconsin Rapids for decades."
+  />
     <title>Shaw Lee</title>
   </head>
   <body>
