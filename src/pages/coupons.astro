@@ -1,0 +1,31 @@
+---
+  // layout and components
+  import BaseLayout from '../layouts/base.astro'
+
+  // data
+  import json from '../../public/data/menu.json';
+  import pages from '../../public/data/pages.json';
+import { Image } from 'astro:assets';
+import coupon from '../imgs/coupon.jpg'
+  const page = pages.menu;
+  const menu = json;
+---
+    
+<BaseLayout title={page.title}>
+
+  <main>
+    <h1 class="section-title">Coupons</h1>
+    <div class="section-intro">
+      <a href="/src/imgs/coupon.jpg">
+      <Image src={coupon} alt="Food photo" style="width: 30vw; height:auto" />
+      </a>
+    </div>
+
+  </main>
+
+</BaseLayout>
+<style>
+  .image{
+    width:10vw;
+  }
+</style>

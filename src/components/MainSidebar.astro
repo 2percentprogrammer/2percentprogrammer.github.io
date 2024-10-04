@@ -1,0 +1,75 @@
+
+---
+import { Image } from 'astro:assets';
+import shawlee from '../imgs/shawlee.png'
+---
+<div class="sidebar">
+  <a href="/"><Image
+  src={shawlee} 
+  alt="Shaw Lee Resturant"
+  class="logo"/></a>
+  <a class="item" href="/">Shaw Lee</a>
+  <a class="item" href="./../../public/menu.pdf">Menu</a>
+  <a class="item" href="/coupons">Coupons</a>
+  <a class="item" href="https://www.facebook.com/eatatshawlee">Facebook Page</a>
+</div>
+
+
+<style>
+  .sidebar {
+    background-color:#fff;
+    border-right: solid 1px var(--secondary-accent-color);
+  }
+@media (min-width: 901px){
+  .logo {
+    display:block;
+
+    text-align: center;
+    height: 10vh;
+    width:auto
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: row; /* Arrange items in a row */
+    justify-content: flex-start; /* Align items to the left */
+    align-items: center; /* Center items vertically */
+    width: 100%; /* Full width */
+    height: 10vh; /* Adjust the height as needed */
+    background-color: var(--primary-background-color); /* Background color */
+    border-bottom: 1px solid var(--secondary-accent-color); /* Bottom border */
+    padding: 0.6vw; /* Add padding if needed */
+  }
+}
+  
+
+  /* Styles for mobile devices */
+  @media (max-width: 500px) {
+  .sidebar {
+    height: 3vh; !important
+    background-color: lightblue; /* Temporary color for testing */
+  }
+  .logo {
+    display: block;
+    text-align: center;
+    height: 3vh; !important
+    width: auto;
+    background-color: lightcoral; /* Temporary color for testing */
+  }
+}
+
+
+  .item {
+    padding:1.5vw
+  }
+
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* Ensure the header stays above other content */
+  }
+
+  main {
+    margin-top: 60px; /* Adjust the margin to accommodate the height of the sidebar */
+  }
+</style>

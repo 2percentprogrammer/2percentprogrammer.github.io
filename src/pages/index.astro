@@ -1,0 +1,137 @@
+---
+import BaseLayout from '../layouts/base-home.astro';
+import pages from '../../public/data/pages.json';
+
+const restaurantPhoneNumber = "7154215550";
+---
+<script>
+interface RestaurantHours {
+    [day: string]: string;
+}
+
+/**
+ * This is military time, as it keeps the logic simple.
+ */
+const restaurantHours: RestaurantHours = {
+    "Monday": "15:30 - 21:00",
+    "Tuesday": "11:00 - 21:00",
+    "Wednesday": "11:00 - 21:00",
+    "Thursday": "11:00 - 21:00",
+    "Friday": "11:00 - 21:00",
+    "Saturday": "15:30 - 21:00",
+    "Sunday": "11:00 - 21:00"
+}
+function isRestaurantOpen(): boolean {
+    const today = new Date();
+    const currentDay = today.toLocaleDateString('en-US', { weekday: 'long', timeZone: 'America/Chicago' });
+    
+    // Use Intl.DateTimeFormat to get the correct current time in CST
+    const formatter = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', hour: '2-digit', minute: '2-digit', hour12: false });
+    const parts = formatter.formatToParts(today);
+    
+    let currentTime = 0, hour = 0, minute = 0;
+    for (const part of parts) {
+        if (part.type === 'hour') {
+            hour = parseInt(part.value);
+        } else if (part.type === 'minute') {
+            minute = parseInt(part.value);
+        }
+    }
+    currentTime = hour * 100 + minute;
+    
+    console.log(currentTime);
+    
+    const openingHours = restaurantHours[currentDay];
+    if (!openingHours) {
+        return false;
+    }
+    
+    const [openTimeStr, closeTimeStr] = openingHours.split(' - ');
+    const [openHourStr, openMinuteStr] = openTimeStr.split(':');
+    const [closeHourStr, closeMinuteStr] = closeTimeStr.split(':');
+    const openTime = parseInt(openHourStr) * 100 + parseInt(openMinuteStr);
+    const closeTime = parseInt(closeHourStr) * 100 + parseInt(closeMinuteStr);
+    
+    if (currentTime >= openTime && currentTime <= closeTime) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function updateRestaurantStatus(): void {
+    const restaurantStatus = isRestaurantOpen();
+    const element = document.getElementById("jsOpen");
+    let text;
+    
+    if (restaurantStatus === true){
+      text = "We are currently open!";
+    }else{
+      text = "We are not currently open :(";
+    }
+    if (element){
+      element.textContent = text;
+      element.className = 'open';
+    }
+    
+    }
+updateRestaurantStatus();
+</script>
+<BaseLayout title="Home">
+  <main>
+    <h1 class="section-title">
+		Authentic Chinese and Japanese cuisine.
+	</h1>
+    <p class="section-strapline"> We have proudly served Wisconsin Rapids for over twenty years with our delicious dishes. </p>
+    <br />
+    <p> Please note that we do not take online orders!</p>
+
+    <h2 id="phone"><a id="ptest" href={`tel:${restaurantPhoneNumber}`}>Dial 715-421-5550 to order!</a></h2>
+    <h2 id="jsOpen">Opening hours (CST)</h2>    
+    <div class="hours">
+      <br />
+      <h3>Hours: </h3>
+      <p>Monday 3:30 PM - 9:00 PM</p>
+      <p>Tuesday 11:00 AM - 9:00 PM</p>
+      <p>Wednesday 11:00 AM - 9:00 PM</p>
+      <p>Thursday 11:00 AM - 9:00 PM</p>
+      <p>Friday 11:00 AM - 9:00 PM</p>
+      <p>Saturday 3:30 PM - 9:00 PM</p>
+      <p>Sunday 11:00 AM - 9:00PM</p>
+      
+      </div>
+  </main>
+  
+</BaseLayout>
+
+
+<style>
+.title{
+
+}
+.testimonial{
+  margin: 1rem 0;
+}
+.testimonial-meta {
+  font-size:1em;
+  color:var(--secondary-text-color);
+}
+.testimonial h3 {
+  margin: 0.5rem 0 0.5rem;
+  font-size: 1.5rem;;
+}
+.testimonial div {
+  margin: 0;
+}
+#jsOpen{
+margin-bottom: 1vw;
+}
+#subtitle{
+font-style: italic;
+}
+.open{
+  margin-bottom: 1vw;
+  background-color:#fea99e;
+  display:inline-block;
+}
+</style>
